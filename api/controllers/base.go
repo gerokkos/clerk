@@ -1,13 +1,21 @@
 package controllers
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres" //postgres database driver
+)
+
+const (
+	host = "localhost"
+	port = 5432
+	user = "postgres"
 )
 
 type Server struct {
@@ -35,6 +43,26 @@ func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, D
 	server.Router = mux.NewRouter()
 
 	server.initializeRoutes()
+}
+
+func OpenConnection() *sql.DB {
+	dbPassword, dbName :=
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_NAME")
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		host, port, user, dbPassword, dbName)
+
+	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		panic(err)
+	}
+
+	err = db.Ping()
+	if err != nil {
+		panic(err)
+	}
+
+	return db
 }
 
 func (server *Server) Run(addr string) {
