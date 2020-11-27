@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 //Name struct
 type Name struct {
@@ -38,4 +42,14 @@ type Filter struct {
 	Email         string `schema:"email"`
 	StartingAfter int64  `schema:"starting_after"`
 	EndingBefore  int64  `schema:"ending_before"`
+}
+
+func (u *User) SaveUser(db *gorm.DB) (*User, error) {
+
+	var err error
+	err = db.Debug().Create(&u).Error
+	if err != nil {
+		return &User{}, err
+	}
+	return u, nil
 }
