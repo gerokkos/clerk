@@ -13,8 +13,30 @@ import (
 )
 
 func (server *Server) Populate(w http.ResponseWriter, r *http.Request) {
+
+	if err := r.ParseForm(); err != nil {
+		// Handle error
+	}
+
+	url := new(models.Url)
+	if err := schema.NewDecoder().Decode(url, r.Form); err != nil {
+		// Handle error
+	}
+	// Do something with filter
+	fmt.Printf("%+v", url)
+	err := server.seed(string(url.Url))
+
+	if err == nil {
+		json.NewEncoder(w).Encode("Success!")
+	}
+}
+
+func (server *Server) seed(url string) error {
 	db := OpenConnection()
-	resp, err := http.Get("https://randomuser.me/api/?results=5000&inc=name,email,cell,registered,picture&noinfo")
+	if url == "" {
+		url = "https://randomuser.me/api/?results=5000&inc=name,email,cell,registered,picture&noinfo"
+	}
+	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -38,13 +60,8 @@ func (server *Server) Populate(w http.ResponseWriter, r *http.Request) {
 		} else {
 		}
 	}
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		panic(err)
-	}
-
-	w.WriteHeader(http.StatusOK)
 	defer db.Close()
+	return err
 }
 
 func (server *Server) Clerks(w http.ResponseWriter, r *http.Request) {
@@ -60,7 +77,7 @@ func (server *Server) Clerks(w http.ResponseWriter, r *http.Request) {
 	// Do something with filter
 	fmt.Printf("%+v", filter)
 	email := strings.ToLower(filter.Email)
-	users, err := server.GetAllUsers(int64(filter.Limit), string(email), int64(filter.StartingAfter), int64(filter.EndingBefore))
+	users, err := server.getAllUsers(int64(filter.Limit), string(email), int64(filter.StartingAfter), int64(filter.EndingBefore))
 
 	if err != nil {
 		log.Fatalf("Unable to get all user. %v", err)
@@ -69,7 +86,7 @@ func (server *Server) Clerks(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(users)
 }
 
-func (server *Server) GetAllUsers(limit int64, email string, startingAfter int64, endingBefore int64) ([]models.User, error) {
+func (server *Server) getAllUsers(limit int64, email string, startingAfter int64, endingBefore int64) ([]models.User, error) {
 	// create the postgres db connection
 	db := OpenConnection()
 	defer db.Close()

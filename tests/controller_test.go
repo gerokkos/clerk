@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -12,7 +13,9 @@ import (
 
 	"github.com/gerokkos/clerk/api/models"
 	"github.com/gorilla/mux"
+	"github.com/nbio/st"
 	"gopkg.in/go-playground/assert.v1"
+	"gopkg.in/h2non/gock.v1"
 )
 
 func TestCreateUser(t *testing.T) {
@@ -27,13 +30,13 @@ func TestCreateUser(t *testing.T) {
 		registered time.Time
 	}{
 		{
-			inputJSON: `{"id":8,"name":{"first":"Veera","last":"Lakso"},"email":"veera.lakso@example.com","cell":"040-706-38-81","picture":{"medium":"https://randomuser.me/api/portraits/med/women/18.jpg"},"registered":{"date":"2012-05-15T21:46:43.19Z"}}`,
+			inputJSON: `[{"id":11454,"name":{"first":"Kara","last":"Bootsman"},"email":"kara.bootsman@example.com","cell":"(179)-338-5378","picture":{"medium":"https://randomuser.me/api/portraits/med/women/65.jpg"},"registered":{"date":"2019-09-25T21:34:11.424Z"}}]`,
 		},
 	}
 
 	for _, v := range samples {
 
-		req, err := http.NewRequest("GET", "/clerks", bytes.NewBufferString(v.inputJSON))
+		req, err := http.NewRequest("GET", "/clerks?limit=1", bytes.NewBufferString(v.inputJSON))
 		if err != nil {
 			t.Errorf("this is the error: %v", err)
 		}
@@ -72,7 +75,7 @@ func TestGetUsers(t *testing.T) {
 		log.Fatalf("Cannot convert to json: %v\n", err)
 	}
 	assert.Equal(t, rr.Code, http.StatusOK)
-	assert.Equal(t, len(users), 2)
+	assert.Equal(t, len(users), 10)
 }
 
 func TestGetUserBy(t *testing.T) {
@@ -117,4 +120,25 @@ func TestGetUserBy(t *testing.T) {
 			assert.Equal(t, len(responseMap), 2)
 		}
 	}
+}
+
+func TestClient(t *testing.T) {
+	defer gock.Off()
+
+	gock.New("http://foo.com").
+		Reply(200).
+		BodyString("foo foo")
+
+	req, err := http.NewRequest("GET", "http://foo.com", nil)
+	client := &http.Client{Transport: &http.Transport{}}
+	gock.InterceptClient(client)
+
+	res, err := client.Do(req)
+	st.Expect(t, err, nil)
+	st.Expect(t, res.StatusCode, 200)
+	body, _ := ioutil.ReadAll(res.Body)
+	st.Expect(t, string(body), "foo foso")
+
+	// Verify that we don't have pending mocks
+	st.Expect(t, gock.IsDone(), true)
 }
