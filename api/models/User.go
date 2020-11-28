@@ -44,6 +44,10 @@ type Filter struct {
 	EndingBefore  int64  `schema:"ending_before"`
 }
 
+type Url struct {
+	Url string `schema:"url"`
+}
+
 func (u *User) SaveUser(db *gorm.DB) (*User, error) {
 
 	var err error
