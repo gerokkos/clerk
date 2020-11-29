@@ -8,7 +8,6 @@
 
 # Table of Contents
 
-* [About The Database Component](#about-the-database-component)
 * [Getting Started](#getting-started)
 * [Contributing](#contributing)
 
