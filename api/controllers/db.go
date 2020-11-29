@@ -28,7 +28,7 @@ func (server *Server) seed(url string) error {
 	json.Unmarshal([]byte(bodyBytes), &results)
 
 	sqlStatement := `
-	INSERT INTO clerk (first_name, last_name, email, cell, picture, registered_on)
+	INSERT INTO clerks (first_name, last_name, email, cell, picture, registered_on)
 	VALUES ($1, $2, $3, $4, $5, $6)
 	RETURNING user_id`
 
@@ -53,7 +53,7 @@ func (server *Server) getAllUsers(limit int64, email string, startingAfter int64
 		limit = 10
 	}
 
-	q := fmt.Sprintf("SELECT * FROM clerk")
+	q := fmt.Sprintf("SELECT * FROM clerks")
 	args := []interface{}{}
 
 	// Add conditional query/args

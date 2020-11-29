@@ -2,8 +2,6 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 //Name struct
@@ -48,22 +46,12 @@ type Url struct {
 	Url string `schema:"url"`
 }
 
-func (u *User) SaveUser(db *gorm.DB) (*User, error) {
-
-	var err error
-	err = db.Debug().Create(&u).Error
-	if err != nil {
-		return &User{}, err
-	}
-	return u, nil
-}
-
-func (u *User) FindAllUsers(db *gorm.DB) (*[]User, error) {
-	var err error
-	users := []User{}
-	err = db.Debug().Model(&User{}).Limit(100).Find(&users).Error
-	if err != nil {
-		return &[]User{}, err
-	}
-	return &users, err
+type Clerks struct {
+	User_id       int    `gorm:"primary_key"`
+	First_name    string `gorm:"type:varchar(255)"`
+	Last_name     string `gorm:"type:varchar(255)"`
+	Email         string `gorm:"type:varchar(100)"`
+	Cell          string `gorm:"type:varchar(100)"`
+	Picture       string `gorm:"type:varchar(255)"`
+	Registered_on time.Time
 }
