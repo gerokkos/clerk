@@ -21,7 +21,6 @@ func (server *Server) Populate(w http.ResponseWriter, r *http.Request) {
 	if err := schema.NewDecoder().Decode(url, r.Form); err != nil {
 		// Handle error
 	}
-	// Do something with filter
 	fmt.Printf("%+v", url)
 	err := server.seed(string(url.Url))
 
