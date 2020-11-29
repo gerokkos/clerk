@@ -21,7 +21,6 @@ func (server *Server) Populate(w http.ResponseWriter, r *http.Request) {
 	if err := schema.NewDecoder().Decode(url, r.Form); err != nil {
 		// Handle error
 	}
-	// Do something with filter
 	fmt.Printf("%+v", url)
 	err := server.seed(string(url.Url))
 
@@ -46,7 +45,7 @@ func (server *Server) Clerks(w http.ResponseWriter, r *http.Request) {
 	users, err := server.getAllUsers(int64(filter.Limit), string(email), int64(filter.StartingAfter), int64(filter.EndingBefore))
 
 	if err != nil {
-		log.Fatalf("Unable to get all user. %v", err)
+		log.Fatalf("Unable to get clerks. %v", err)
 	}
 	// send all the users as response
 	json.NewEncoder(w).Encode(users)
