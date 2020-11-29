@@ -14,6 +14,15 @@
 
 # Getting Started
 
+├──Clerk
+    ├── api                    
+    │   ├── controllers        
+    │   ├── middleware        
+    │   ├── models         
+    │   ├── responses        
+    │   └── server                
+    └── tests
+
 ### Run the Application
 
 ``
