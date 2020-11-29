@@ -204,6 +204,53 @@ func TestGetEndingBeforeWithLimit(t *testing.T) {
 			rr.Body.String(), expected)
 	}
 }
+
+func TestGetWithEmail(t *testing.T) {
+	req, err := http.NewRequest("GET", "/clerks?email=edda.baum@example.com", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(server.Clerks)
+	handler.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+	// Check the response body is what we expect.
+	expected := `[{"id":5004,"name":{"first":"Edda","last":"Baum"},"email":"edda.baum@example.com","cell":"0170-0193364","picture":{"medium":"https://randomuser.me/api/portraits/med/women/50.jpg"},"registered":{"date":"2010-09-12T14:58:52.8+01:00"}}]`
+
+	areEqual, err := AreEqualJSON(expected, rr.Body.String())
+
+	if areEqual == false {
+		t.Errorf("handler returned unexpected body: got %v want %v",
+			rr.Body.String(), expected)
+	}
+}
+
+func TestGetWithEmailUpperCase(t *testing.T) {
+	req, err := http.NewRequest("GET", "/clerks?email=EDDA.BAUM@EXAMPLE.COM", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(server.Clerks)
+	handler.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+	// Check the response body is what we expect.
+	expected := `[{"id":5004,"name":{"first":"Edda","last":"Baum"},"email":"edda.baum@example.com","cell":"0170-0193364","picture":{"medium":"https://randomuser.me/api/portraits/med/women/50.jpg"},"registered":{"date":"2010-09-12T14:58:52.8+01:00"}}]`
+
+	areEqual, err := AreEqualJSON(expected, rr.Body.String())
+
+	if areEqual == false {
+		t.Errorf("handler returned unexpected body: got %v want %v",
+			rr.Body.String(), expected)
+	}
+}
+
 func TestDeleteMockData(t *testing.T) {
 	controllers.Load(server.DB)
 }
