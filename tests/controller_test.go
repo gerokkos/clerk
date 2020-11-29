@@ -8,6 +8,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/gerokkos/clerk/api/controllers"
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -222,4 +223,8 @@ func TestGetEndingBeforeWithLimit(t *testing.T) {
 	if diff := cmp.Diff(expected, rr.Body.String()); diff != "" {
 		fmt.Println(diff)
 	}
+}
+
+func TestDeleteMockData(t *testing.T) {
+	controllers.Load(server.DB)
 }
