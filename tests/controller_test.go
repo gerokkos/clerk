@@ -28,6 +28,20 @@ func AreEqualJSON(s1, s2 string) (bool, error) {
 	return reflect.DeepEqual(o1, o2), nil
 }
 
+func TestSeedWithMockData(t *testing.T) {
+	req, err := http.NewRequest("POST", "/populate?url=https://jsonkeeper.com/b/TXN5", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(server.Populate)
+	handler.ServeHTTP(rr, req)
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+}
+
 func TestGetWithoutLimit(t *testing.T) {
 	req, err := http.NewRequest("GET", "/clerks", nil)
 	if err != nil {
