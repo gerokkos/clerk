@@ -13,7 +13,6 @@ import (
 )
 
 const (
-	host = "localhost"
 	port = 5432
 )
 
@@ -45,12 +44,13 @@ func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, D
 }
 
 func OpenConnection() *sql.DB {
-	dbUser, dbPassword, dbName :=
+	dbHost, dbUser, dbPassword, dbName :=
+		os.Getenv("DB_HOST"),
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"),
 		os.Getenv("DB_NAME")
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		host, port, dbUser, dbPassword, dbName)
+		dbHost, port, dbUser, dbPassword, dbName)
 
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
