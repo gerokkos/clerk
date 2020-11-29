@@ -35,11 +35,7 @@ func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, D
 			fmt.Printf("We are connected to the %s database", Dbdriver)
 		}
 	}
-
-	//server.DB.Debug().AutoMigrate(&models.User{}, &models.Post{}) //database migration
-
 	server.Router = mux.NewRouter()
-
 	server.initializeRoutes()
 }
 
@@ -61,7 +57,6 @@ func OpenConnection() *sql.DB {
 	if err != nil {
 		panic(err)
 	}
-
 	return db
 }
 

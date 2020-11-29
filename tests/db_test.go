@@ -34,30 +34,14 @@ func Database() {
 
 	var err error
 
-	TestDbDriver := os.Getenv("TestDbDriver")
+	DbDriver := os.Getenv("DB_DRIVER")
 
-	DBURL := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", os.Getenv("TestDbHost"), os.Getenv("TestDbPort"), os.Getenv("TestDbUser"), os.Getenv("TestDbName"), os.Getenv("TestDbPassword"))
-	server.DB, err = gorm.Open(TestDbDriver, DBURL)
+	DBURL := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USER"), os.Getenv("DB_NAME"), os.Getenv("DB_PASSWORD"))
+	server.DB, err = gorm.Open(DbDriver, DBURL)
 	if err != nil {
-		fmt.Printf("Cannot connect to %s database\n", TestDbDriver)
+		fmt.Printf("Cannot connect to %s database\n", DbDriver)
 		log.Fatal("This is the error:", err)
 	} else {
-		fmt.Printf("We are connected to the %s database\n", TestDbDriver)
+		fmt.Printf("We are connected to the %s database\n", DbDriver)
 	}
-}
-
-func refreshUserTable() error {
-	server.DB.Exec("SET foreign_key_checks=0")
-	err := server.DB.Debug().DropTableIfExists(&models.User{}).Error
-	if err != nil {
-		return err
-	}
-	server.DB.Exec("SET foreign_key_checks=1")
-	err = server.DB.Debug().AutoMigrate(&models.User{}).Error
-	if err != nil {
-		return err
-	}
-	log.Printf("Successfully refreshed table")
-	log.Printf("refreshUserTable routine OK !!!")
-	return nil
 }
