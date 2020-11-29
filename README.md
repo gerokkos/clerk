@@ -13,9 +13,6 @@
   * [Prerequisites](#prerequisites)
 * [Contributing](#contributing)
 
-# About The Database Component
-
-The database component provisions and sets up the AWS DocumentDB instance that servers the Covvered Platform.
 
 # Getting Started
 
