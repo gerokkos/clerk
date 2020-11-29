@@ -22,18 +22,12 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Error getting env %v\n", err)
 	}
 	Database()
-
-	log.Printf("Before calling m.Run() !!!")
-	ret := m.Run()
-	log.Printf("After calling m.Run() !!!")
-	//os.Exit(m.Run())
-	os.Exit(ret)
 }
 
+//Opening db for tests
 func Database() {
 
 	var err error
-
 	DbDriver := os.Getenv("DB_DRIVER")
 
 	DBURL := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USER"), os.Getenv("DB_NAME"), os.Getenv("DB_PASSWORD"))

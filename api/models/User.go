@@ -35,6 +35,7 @@ type UserList struct {
 	Users []User `json:"results"`
 }
 
+//Filter struct
 type Filter struct {
 	Limit         int64  `schema:"limit"`
 	Email         string `schema:"email"`
@@ -42,16 +43,11 @@ type Filter struct {
 	EndingBefore  int64  `schema:"ending_before"`
 }
 
-type Url struct {
-	Url string `schema:"url"`
+//URL struct
+type URL struct {
+	URL string `schema:"url"`
 }
 
+//Clerks struct used to drop the table
 type Clerks struct {
-	User_id       int    `gorm:"primary_key"`
-	First_name    string `gorm:"type:varchar(255)"`
-	Last_name     string `gorm:"type:varchar(255)"`
-	Email         string `gorm:"type:varchar(100)"`
-	Cell          string `gorm:"type:varchar(100)"`
-	Picture       string `gorm:"type:varchar(255)"`
-	Registered_on time.Time
 }

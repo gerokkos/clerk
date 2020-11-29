@@ -10,6 +10,7 @@ import (
 	"github.com/gerokkos/clerk/api/models"
 )
 
+//persist the users in the database
 func (server *Server) seed(url string) error {
 	db := OpenConnection()
 	if url == "" {
@@ -43,20 +44,20 @@ func (server *Server) seed(url string) error {
 	return err
 }
 
+//Get the users from the database
 func (server *Server) getAllUsers(limit int64, email string, startingAfter int64, endingBefore int64) ([]models.User, error) {
-	// create the postgres db connection
 	db := OpenConnection()
 	defer db.Close()
 	var users []models.User
 
-	if limit == 0 {
+	if limit == 0 { //set the default limit = 10
 		limit = 10
 	}
 
 	q := fmt.Sprintf("SELECT * FROM clerks")
 	args := []interface{}{}
 
-	// Add conditional query/args
+	// Add conditional query/args dynamically
 	if email != "" || startingAfter != 0 || endingBefore != 0 {
 		q = fmt.Sprintf("%s WHERE ", q)
 		args = append(args)

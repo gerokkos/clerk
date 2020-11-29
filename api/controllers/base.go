@@ -16,11 +16,13 @@ const (
 	port = 5432
 )
 
+//Server struct
 type Server struct {
 	DB     *gorm.DB
 	Router *mux.Router
 }
 
+//Initialize the db connection
 func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, DbName string) {
 
 	var err error
@@ -39,6 +41,7 @@ func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, D
 	server.initializeRoutes()
 }
 
+//OpenConnection used to access the db for queries
 func OpenConnection() *sql.DB {
 	dbHost, dbUser, dbPassword, dbName :=
 		os.Getenv("DB_HOST"),
@@ -61,6 +64,7 @@ func OpenConnection() *sql.DB {
 	return db
 }
 
+//Run the api
 func (server *Server) Run(addr string) {
 	fmt.Println("Listening to port 8080")
 	log.Fatal(http.ListenAndServe(addr, server.Router))

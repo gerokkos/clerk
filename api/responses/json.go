@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+//JSON format
 func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
 	w.WriteHeader(statusCode)
 	err := json.NewEncoder(w).Encode(data)
@@ -14,6 +15,7 @@ func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
 	}
 }
 
+//ERROR func
 func ERROR(w http.ResponseWriter, statusCode int, err error) {
 	if err != nil {
 		JSON(w, statusCode, struct {
