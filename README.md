@@ -9,10 +9,20 @@
 # Table of Contents
 
 * [Getting Started](#getting-started)
+* [Project Structure](#project-structure)
+* [Integration Guide ](#integration-guid)
+* [Use the API](#use-the-api)
+* [Clone the Application](#clone-the-application)
+* [Run with Docker](#run-with-docker)
+* [Run the Application Locally](#run-the-application-locally)
+* [Clean tests cache if cached](#clean-tests-cache-if-cached)
 * [Contributing](#contributing)
 
 
-# Getting Started
+
+
+
+# Project Structure
 
 ├──Clerk
     ├── api                    
@@ -23,17 +33,90 @@
     │   └── server                
     └── tests
 
-### Run the Application
+
+
+## Integration Guide 
+The database used is PostgreSQL
+
+### Use the API
+
+| Endpoint         |                              |   
+| -------------    | -----------------------------|
+| /populate        |                              |
+| /clerks          | ?limit=<>                    |
+| /clerks          | ?starting_after=<>           |
+| /clerks          | ?ending_before=<>            |
+| /clerks          | ?starting_after=<>&limit=<>  |
+| /clerks          | ?starting_after=<>&limit=<>  |
+| /clerks          | ?email=""                    |
+
+
+
+
+### Clone the Application
+
+``
+git clone git@github.com:gerokkos/clerk.git
+``
+
+
+### Run with Docker
+
+Start up the application services by running:
+
+``
+docker-compose up
+``
+
+You call use the API from http://localhost:8080
+
+
+To stop the services run: 
+
+``
+docker-compose down
+``
+
+
+Run the tests with Docker:
+
+``
+docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
+``
+
+
+To use the pgAdmin:
+
+http://localhost:5050
+i. Choose Create then Server
+ii. Fill in any name that you want.
+iii. Click on connection tab.
+
+Run:
+``
+docker container ls
+``
+
+Copy the ID of the clerk-db-postgres and use it here:
+``
+docker inspect <container_id> | grep IPAddress
+``
+The IPAddress, is the host name in pgAdmin and username-password the ones in the .env
+
+
+
+### Run the Application Locally
 
 ``
 go run main.go
 ``
 
-### Clear test cache 
+### Clean tests cache if cached
 
 ``
 go clean -testcache
 ``
+
 
 ## Contributing
 
