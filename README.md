@@ -24,14 +24,12 @@
 
 # Project Structure
 
-├──Clerk
-    ├── api                    
-    │   ├── controllers        
-    │   ├── middleware        
-    │   ├── models         
-    │   ├── responses        
-    │   └── server                
-    └── tests
+
+    ├── Clerk                    
+    │   ├── api             # Functionality/features
+    │   ├── tests           # Testing endpoints  
+    │   └── main            # Run the application
+     
 
 
 
@@ -85,6 +83,7 @@ docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
 ``
 
 
+
 To use the pgAdmin:
 
 http://localhost:5050
@@ -98,9 +97,11 @@ docker container ls
 ``
 
 Copy the ID of the clerk-db-postgres and use it here:
+
 ``
 docker inspect <container_id> | grep IPAddress
 ``
+
 The IPAddress, is the host name in pgAdmin and username-password the ones in the .env
 
 
