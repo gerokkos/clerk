@@ -36,6 +36,8 @@
 ## Integration Guide 
 The database used is PostgreSQL
 
+
+
 ### Use the API
 
 | Endpoint         |                              |   
@@ -84,15 +86,21 @@ docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit
 
 
 
+
 To use the pgAdmin:
+
 
 http://localhost:5050
 
-i. Choose Create then Server
+
+i. Choose Create, then Server
+
 
 ii. Fill in any name that you want.
 
+
 iii. Click on connection tab.
+
 
 
 Run:
@@ -100,23 +108,30 @@ Run:
 docker container ls
 ``
 
+
 Copy the ID of the clerk-db-postgres and use it here:
+
 
 ``
 docker inspect <container_id> | grep IPAddress
 ``
 
+
 The IPAddress, is the host name in pgAdmin and username-password the ones in the .env
+
 
 
 
 ### Run the Application Locally
 
+
 ``
 go run main.go
 ``
 
+
 ### Clean tests cache if cached
+
 
 ``
 go clean -testcache
