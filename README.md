@@ -88,8 +88,11 @@ To use the pgAdmin:
 
 http://localhost:5050
 i. Choose Create then Server
+
 ii. Fill in any name that you want.
+
 iii. Click on connection tab.
+
 
 Run:
 ``
