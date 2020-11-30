@@ -68,7 +68,7 @@ Start up the application services by running:
 docker-compose up
 ``
 
-You call use the API from http://localhost:8080
+Call the API from http://localhost:8080
 
 
 To stop the services run: 
