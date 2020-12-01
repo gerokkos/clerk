@@ -22,6 +22,11 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Error getting env %v\n", err)
 	}
 	Database()
+
+	log.Printf("Before calling m.Run() !!!")
+	ret := m.Run()
+	log.Printf("After calling m.Run() !!!")
+	os.Exit(ret)
 }
 
 //Opening db for tests
