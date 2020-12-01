@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -78,14 +79,17 @@ func (server *Server) getAllUsers(limit int64, email string, startingAfter int64
 		q = fmt.Sprintf("%s ORDER BY registered_on DESC LIMIT $1", q)
 		args = append(args, limit)
 	}
-	if limit == 0 || limit > 100 {
-		log.Fatalf("limit should be from 1 to 100")
+	if limit > 100 {
+		return users, errors.New("limit parameter value must not exceed 100")
+	}
+	if limit < 0 {
+		return users, errors.New("limit parameter must be a positive integer")
 	}
 
 	rows, err := db.Query(q, args...)
 
 	if err != nil {
-		log.Fatalf("Unable to execute the query. %v", err)
+		return users, errors.New("Unable to execute the query, check your parameters")
 	}
 	defer rows.Close()
 

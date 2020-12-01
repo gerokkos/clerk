@@ -3,15 +3,13 @@ module github.com/gerokkos/clerk
 go 1.13
 
 require (
-	cloud.google.com/go v0.72.0
-	github.com/DATA-DOG/go-sqlmock v1.5.0
-	github.com/google/go-cmp v0.5.4
+	github.com/denisenkom/go-mssqldb v0.9.0 // indirect
 	github.com/gorilla/mux v1.8.0
 	github.com/gorilla/schema v1.2.0
 	github.com/jinzhu/gorm v1.9.16
+	github.com/jinzhu/now v1.1.1 // indirect
 	github.com/joho/godotenv v1.3.0
-	github.com/nbio/st v0.0.0-20140626010706-e9e8d9816f32
-	gopkg.in/go-playground/assert.v1 v1.2.1
-	gopkg.in/h2non/gock.v1 v1.0.16
-	gorm.io/gorm v1.20.7
+	github.com/lib/pq v1.8.0 // indirect
+	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
+	golang.org/x/crypto v0.0.0-20201124201722-c8d3bf9c5392 // indirect
 )
