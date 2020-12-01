@@ -3,11 +3,11 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 
 	"github.com/gerokkos/clerk/api/models"
+	"github.com/gerokkos/clerk/api/responses"
 	"github.com/gorilla/schema"
 )
 
@@ -47,7 +47,8 @@ func (server *Server) Clerks(w http.ResponseWriter, r *http.Request) {
 	users, err := server.getAllUsers(int64(filter.Limit), string(email), int64(filter.StartingAfter), int64(filter.EndingBefore))
 
 	if err != nil {
-		log.Fatalf("Unable to get clerks. %v", err)
+		responses.ERROR(w, http.StatusBadRequest, err)
+		return
 	}
-	json.NewEncoder(w).Encode(users)
+	responses.JSON(w, http.StatusOK, users)
 }
