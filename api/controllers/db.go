@@ -12,7 +12,7 @@ import (
 )
 
 //persist the users in the database
-func (server *Server) seed(url string) error {
+func (server *Server) createUsers(url string) error {
 	db := OpenConnection()
 	if url == "" {
 		url = "https://randomuser.me/api/?results=5000&inc=name,email,cell,registered,picture&noinfo"
@@ -46,7 +46,7 @@ func (server *Server) seed(url string) error {
 }
 
 //Get the users from the database
-func (server *Server) getAllUsers(limit int64, email string, startingAfter int64, endingBefore int64) ([]models.User, error) {
+func (server *Server) getUsers(limit int64, email string, startingAfter int64, endingBefore int64) ([]models.User, error) {
 	db := OpenConnection()
 	defer db.Close()
 	var users []models.User
