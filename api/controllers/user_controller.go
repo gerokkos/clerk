@@ -23,7 +23,7 @@ func (server *Server) Populate(w http.ResponseWriter, r *http.Request) {
 		fmt.Print("Fail to decode!")
 	}
 	fmt.Printf("%+v", url)
-	err := server.seed(string(url.URL))
+	err := server.createUsers(string(url.URL))
 
 	if err == nil {
 		json.NewEncoder(w).Encode("Success!")
@@ -44,7 +44,7 @@ func (server *Server) Clerks(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("%+v", filter)
 	email := strings.ToLower(filter.Email)
-	users, err := server.getAllUsers(int64(filter.Limit), string(email), int64(filter.StartingAfter), int64(filter.EndingBefore))
+	users, err := server.getUsers(int64(filter.Limit), string(email), int64(filter.StartingAfter), int64(filter.EndingBefore))
 
 	if err != nil {
 		responses.ERROR(w, http.StatusBadRequest, err)
